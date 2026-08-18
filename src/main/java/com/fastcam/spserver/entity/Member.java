@@ -33,6 +33,4 @@ public class Member {
     private String profileImg;
     @Column(columnDefinition = "varchar(20) default 'LOCAL'")
     private String provider;
-
-
 }
