@@ -17,6 +17,10 @@ public class MemberService {
         Member member = mr.findById(id);
         return member;
     }
+    public Member getMember(String id) {
+        Member member = mr.findById(id);
+        return member;
+    }
 
     public void insertMember(Member member) {
         mr.save(member);
