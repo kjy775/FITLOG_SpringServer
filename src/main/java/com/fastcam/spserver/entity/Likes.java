@@ -6,16 +6,13 @@ import lombok.Data;
 @Entity
 @Data
 
-public class Like {
+public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
 
-    @Column(nullable = false)
-    private int cnum;
-
     @ManyToOne
-    @JoinColumn(name = "community_num")
+    @JoinColumn(name = "cnum")
     private Community community;
 
     @ManyToOne

@@ -20,7 +20,7 @@ public class ExerciesLog {
     private int num;
 
     private float weight;
-    private int exercies_time;
+    private int exerciesTime;
 
     @CreationTimestamp
     @Column(columnDefinition = "datetime default now()")
