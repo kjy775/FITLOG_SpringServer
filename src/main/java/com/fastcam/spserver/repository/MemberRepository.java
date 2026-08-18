@@ -6,4 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Member findById(String id);
+
+    Member findByNum(int num);
+
+    void deleteById(String id);
 }
