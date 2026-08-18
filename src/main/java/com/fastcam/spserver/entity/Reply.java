@@ -13,9 +13,6 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
 
-    @Column(nullable = false)
-    private int cnum;
-
     @Column(length = 200)
     private String content;
 
@@ -27,8 +24,8 @@ public class Reply {
     @JoinColumn(name = "mnum")
     private Member member;
 
-//    @ManyToOne
-//    @JoinColumn(name = "cnum")
-//    private Community community;
+    @ManyToOne
+    @JoinColumn(name = "cnum")
+    private Community community;
 
 }

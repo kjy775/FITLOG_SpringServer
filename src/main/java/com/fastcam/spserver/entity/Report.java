@@ -11,9 +11,10 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
 
-    @Column(nullable = false)
-    private int cnum;
-
     @Column(nullable = false, length = 500)
     private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "cnum")
+    private Community community;
 }
