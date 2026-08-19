@@ -2,6 +2,7 @@ package com.fastcam.spserver.controller;
 
 import com.fastcam.spserver.dto.KakaoProfile;
 import com.fastcam.spserver.dto.OAuthToken;
+import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
 import com.fastcam.spserver.service.MemberService;
 import com.google.gson.Gson;
@@ -57,7 +58,7 @@ public class MemberController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload(@RequestParam("image") MultipartFile file){
         HashMap<String, Object> map = new HashMap<String, Object>();
-        String path = sc.getRealPath("/image");
+        String path = sc.getRealPath("/member");
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();
@@ -188,6 +189,29 @@ public class MemberController {
         map.put("msg", "OK");
         return map;
     }
+
+    @GetMapping("/getFollowings")
+    public HashMap<String, Object> getFollowings(@RequestParam("ffrom") int ffrom) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("followings", ms.getFollowings(ffrom));
+        return map;
+    }
+
+    @GetMapping("/getFollowers")
+    public HashMap<String, Object> getFollwers(@RequestParam("fto") int fto) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("followers", ms.getFollowers(fto));
+        return map;
+    }
+
+    @PostMapping("/follow")
+    public HashMap<String, Object> follow(@RequestBody Follow follow) {
+        HashMap<String, Object> map = new HashMap<>();
+        ms.onFollow(follow);
+        return map;
+    }
+
+
 
 }
 

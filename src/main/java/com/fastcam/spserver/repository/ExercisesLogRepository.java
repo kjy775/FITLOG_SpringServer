@@ -1,0 +1,10 @@
+package com.fastcam.spserver.repository;
+
+import com.fastcam.spserver.entity.ExercisesLog;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ExercisesLogRepository extends JpaRepository<ExercisesLog, Integer> {
+    List<ExercisesLog> findByMemberNum(int mnum);
+}

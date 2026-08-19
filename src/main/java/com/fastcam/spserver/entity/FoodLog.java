@@ -19,6 +19,7 @@ public class FoodLog {
     private float carbs;
     private float protein;
     private float fat;
+    private int calories;
 
     @CreationTimestamp
     @Column(columnDefinition = "datetime default now()")
