@@ -13,14 +13,15 @@ import java.sql.Timestamp;
 @Entity
 @Data
 
-public class ExerciesLog {
+public class ExercisesLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
 
     private float weight;
-    private int exerciesTime;
+    private int exerciseTime;
+    private int calories;
 
     @CreationTimestamp
     @Column(columnDefinition = "datetime default now()")

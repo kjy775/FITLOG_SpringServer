@@ -1,10 +1,13 @@
 package com.fastcam.spserver.service;
 
+import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
+import com.fastcam.spserver.repository.FollowRepository;
 import com.fastcam.spserver.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -45,5 +48,22 @@ public class MemberService {
 
     public void deleteMember(String id) {
         mr.deleteById(id);
+    }
+
+    @Autowired
+    FollowRepository fr;
+
+    public List<Follow> getFollowings(int ffrom) {
+        List<Follow> list = fr.findByFfrom(ffrom);
+        return list;
+    }
+
+    public List<Follow> getFollowers(int fto) {
+        List<Follow> list = fr.findByFto(fto);
+        return list;
+    }
+
+    public void onFollow(Follow follow) {
+        fr.save(follow);
     }
 }
