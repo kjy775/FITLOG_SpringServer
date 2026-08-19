@@ -35,6 +35,7 @@ public class FoodLogService {
         Nutrition nt = nr.findByFname(foodLog.getMenu());
         if (nt == null){
             NutritionDto ndto = as.findNutrition(foodLog.getMenu());
+            nt = new Nutrition();
             nt.setFname(ndto.getFname());
             nt.setUnit(ndto.getUnit());
             nt.setKcal(ndto.getKcal());
