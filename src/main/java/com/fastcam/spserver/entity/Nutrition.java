@@ -17,10 +17,10 @@ public class Nutrition {
     private String fname;
 
     @Column(nullable = false)
-    private String unit;
+    private int unit;
 
     @Column(nullable = false)
-    private float kcal;
+    private int kcal;
 
     private float carbs;
     private float protein;

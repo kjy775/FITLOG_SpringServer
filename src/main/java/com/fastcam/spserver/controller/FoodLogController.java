@@ -43,9 +43,9 @@ public class FoodLogController {
 
 
     @PostMapping("/addFoodLog")
-    public HashMap<String, Object> addFoodLog(@RequestBody FoodLog foodLog) {
+    public HashMap<String, Object> addFoodLog(@RequestBody FoodLog foodLog, @RequestParam("mnum") int mnum) {
         HashMap<String, Object> map = new HashMap<>();
-        fls.addFoodLog(foodLog);
+        fls.addFoodLog(foodLog, mnum);
         map.put("msg", "OK");
         return map;
     }
