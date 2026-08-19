@@ -9,4 +9,8 @@ public interface FollowRepository extends JpaRepository<Follow, Integer> {
     List<Follow> findByFfrom(int ffrom);
 
     List<Follow> findByFto(int fto);
+
+    void deleteByFfrom(int mnum);
+
+    void deleteByFto(int mnum);
 }

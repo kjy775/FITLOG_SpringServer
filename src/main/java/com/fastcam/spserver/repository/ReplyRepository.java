@@ -10,4 +10,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     Optional<Reply> findByNum(int num);
 
     List<Reply> findByCommunityNumOrderByIndateDesc(int num);
+
+    void deleteByMemberNum(int mnum);
+
+    void deleteByCommunityNum(int num);
 }

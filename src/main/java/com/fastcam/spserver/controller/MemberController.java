@@ -169,10 +169,17 @@ public class MemberController {
     @PostMapping("/kakaoinfoUpdate")
     public HashMap<String, Object> kakaoinfoUpdate(@RequestBody Member member){
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("msg", "OK");
-        map.put("loginUser", ms.getMemberById( member.getId() ) );
+        Member loginUser = ms.updateKakaoInfo(member);
+
+        if (loginUser == null) {
+            map.put("msg", "회원 정보를 찾을 수 없습니다.");
+        } else {
+            map.put("msg", "OK");
+            map.put("loginUser", loginUser);
+        }
         return map;
     }
+
 
     @PostMapping("/updateMember")
     public HashMap<String, Object> updateMember(@RequestBody Member member) {

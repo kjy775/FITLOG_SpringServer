@@ -39,8 +39,7 @@ public class CommunityService {
 
 
     public ArrayList<Likes> getLikeList(int num) {
-        ArrayList<Likes> list = lr.findByNum(num);
-        return list;
+        return lr.findByCommunityNum(num);
     }
 
     @Autowired
@@ -65,12 +64,12 @@ public class CommunityService {
     }
 
     public List<Community> getUserPost(int mnum) {
-        List<Community> list = cr.findByMemberNum(mnum);
+        List<Community> list = cr.findByMemberNumOrderByIndateDesc(mnum);
         return list;
     }
 
     public List<Community> getPostList() {
-        return cr.findAll();
+        return cr.findAllByOrderByIndateDesc();
     }
 
     @Autowired
@@ -82,7 +81,7 @@ public class CommunityService {
         for (Follow f : followList) {
             mnums.add(f.getFto());
         }
-        return cr.findByMemberNumIn(mnums);
+        return cr.findByMemberNumInOrderByIndateDesc(mnums);
     }
 
     @Autowired

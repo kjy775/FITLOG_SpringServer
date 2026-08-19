@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.ArrayList;
 
 public interface LikeRepository extends JpaRepository<Likes, Integer> {
-    Likes findByMemberNumAndCommunityNum(int num, int num1);
+    Likes findByMemberNumAndCommunityNum(int mnum, int cnum);
 
-    ArrayList<Likes> findByNum(int num);
+    ArrayList<Likes> findByCommunityNum(int cnum);
+
+    void deleteByCommunityNum(int num);
+
+    void deleteByMemberNum(int mnum);
 }
