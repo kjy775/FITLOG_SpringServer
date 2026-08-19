@@ -7,9 +7,13 @@ import java.util.List;
 
 public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
+    List<Community> findAllByOrderByIndateDesc();
+
+    List<Community> findByMemberNumOrderByIndateDesc(int mnum);
+
+    List<Community> findByMemberNumInOrderByIndateDesc(List<Integer> mnums);
+
     List<Community> findByMemberNum(int mnum);
 
-    List<Community> findByMemberNumIn(List<Integer> mnums);
-
-    List<Community> findByTitleContainingOrContentContaining(String keyword, String keyword1);
+    void deleteByMemberNum(int mnum);
 }

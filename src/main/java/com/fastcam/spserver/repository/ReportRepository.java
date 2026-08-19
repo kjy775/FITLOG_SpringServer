@@ -4,4 +4,5 @@ import com.fastcam.spserver.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReportRepository extends JpaRepository<Report, Integer> {
+    void deleteByCommunityNum(int num);
 }
