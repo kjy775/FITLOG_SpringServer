@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     Optional<Reply> findByNum(int num);
 
-    List<Reply> findByNumOrderByIdDesc(int num);
+    List<Reply> findByCommunityNumOrderByIndateDesc(int num);
 }

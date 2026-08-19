@@ -30,7 +30,7 @@ public class CommunityService {
     LikeRepository lr;
 
     public void addLike(Likes likes) {
-        Likes findLike = lr.findByLikeAndMemberNumAndCommunityNum(
+        Likes findLike = lr.findByMemberNumAndCommunityNum(
                 likes.getMember().getNum(),
                 likes.getCommunity().getNum());
         if(findLike == null) lr.save(likes);
@@ -60,9 +60,8 @@ public class CommunityService {
         }
     }
 
-    public Object getReplyList(int num) {
-        List<Reply> list = rr.findByNumOrderByIdDesc(num);
-        return list;
+    public List<Reply> getReplyList(int num) {
+        return rr.findByCommunityNumOrderByIndateDesc(num);
     }
 
     public List<Community> getUserPost(int mnum) {
