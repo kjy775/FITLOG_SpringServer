@@ -14,9 +14,9 @@ public class ExercisesLogController {
     ExercisesLogService els;
 
     @PostMapping("/addExercisesLog")
-    public HashMap<String, Object> addExerciseLog(@RequestBody ExercisesLog exercisesLog) {
+    public HashMap<String, Object> addExerciseLog(@RequestBody ExercisesLog exercisesLog, @RequestParam("mnum") int mnum) {
         HashMap<String, Object> map = new HashMap<>();
-        els.addExercisesLog(exercisesLog);
+        els.addExercisesLog(exercisesLog, mnum);
         map.put("msg", "OK");
         return map;
     }

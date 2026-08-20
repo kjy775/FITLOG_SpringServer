@@ -20,6 +20,8 @@ public class ExercisesLog {
     private int num;
 
     private float weight;
+    @Column(length = 100)
+    private String exName;
     private int exerciseTime;
     private int calories;
 
