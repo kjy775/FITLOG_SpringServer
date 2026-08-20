@@ -10,4 +10,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Member findByNum(int num);
 
     void deleteById(String id);
+
+    Member findByNameAndPhone(String name, String phone);
+
+    int countByIdAndNameAndPhone(String id, String name, String phone);
 }

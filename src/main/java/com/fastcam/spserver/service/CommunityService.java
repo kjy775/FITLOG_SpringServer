@@ -26,6 +26,25 @@ public class CommunityService {
         return insertCommunity.getNum();
     }
 
+    public void updatePost(Community community) {
+        Optional<Community> result = cr.findByNum(community.getNum());
+
+        if (result.isPresent()) {
+            Community oldCommunity = result.get();
+
+            oldCommunity.setTitle(community.getTitle());
+            oldCommunity.setContent(community.getContent());
+        }
+    }
+
+    public void deletePost(int num) {
+        Optional<Community> result = cr.findByNum(num);
+        if(result.isPresent()) {
+            Community community = result.get();
+            cr.delete(community);
+        }
+    }
+
     @Autowired
     LikeRepository lr;
 
@@ -90,4 +109,5 @@ public class CommunityService {
     public void reportPost(Report report) {
         repr.save(report);
     }
+
 }
