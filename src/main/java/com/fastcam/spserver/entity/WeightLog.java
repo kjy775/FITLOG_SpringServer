@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-
 public class    WeightLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
