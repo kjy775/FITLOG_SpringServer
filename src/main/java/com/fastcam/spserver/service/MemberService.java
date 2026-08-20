@@ -7,7 +7,10 @@ import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -105,6 +108,34 @@ public class MemberService {
     }
 
     public void onFollow(Follow follow) {
-        fr.save(follow);
+        Optional<Follow> result =
+                fr.findByFfromAndFto(follow.getFfrom(), follow.getFto());
+
+        if (result.isPresent()) {
+            fr.delete(result.get());
+        } else {
+            fr.save(follow);
+        }
+    }
+
+    public String findId(String name, String phone) {
+        Member member = mr.findByNameAndPhone(name, phone);
+        if(member == null) return null;
+        return member.getId();
+    }
+
+    public int checkUser(String id, String name, String phone) {
+        return mr.countByIdAndNameAndPhone(id, name, phone);
+    }
+
+    public int resetPass(Member member) {
+        Member oldMember = mr.findById(member.getId());
+        if(oldMember == null) return 0;
+        oldMember.setPass(member.getPass());
+        return 1;
+    }
+
+    public Member getMemberByNum(int num) {
+        return mr.findByNum(num);
     }
 }

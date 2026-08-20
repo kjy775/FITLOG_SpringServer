@@ -28,6 +28,21 @@ public class CommunityController {
         return map;
     }
 
+    @PostMapping("/updatePost")
+    public HashMap<String, Object> updatePost(@RequestBody Community community) {
+        HashMap<String, Object> map = new HashMap<>();
+        cs.updatePost(community);
+        map.put("msg", "OK");
+        return map;
+    }
+
+    @DeleteMapping("/deletePost/{num}")
+    public HashMap<String, Object> deletePost(@PathVariable("num") int num) {
+        HashMap<String, Object> map = new HashMap<>();
+        cs.deletePost(num);
+        return map;
+    }
+
     @Autowired
     ServletContext sc;
 

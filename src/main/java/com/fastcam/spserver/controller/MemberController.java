@@ -151,19 +151,31 @@ public class MemberController {
         System.out.println("Profile-pfimg : " + pf.getProfile_image_url());
 
         Member mdto = ms.getMemberById(kakaoProfile.getId());
+
         if (mdto == null) {
             mdto = new Member();
-
             mdto.setId(kakaoProfile.getId());
-            //mdto.setSnsid(kakaoProfile.getId());
             mdto.setName(ac.getProfile().getNickname());
             mdto.setProfileImg(pf.getProfile_image_url());
             mdto.setProvider("KAKAO");
-
             ms.insertMember(mdto);
             mdto = ms.getMemberById(kakaoProfile.getId());
+            response.sendRedirect("http://localhost:3000/savekakaoinfo/" + mdto.getNum());
+
+        } else {
+
+            // 기존 회원 → 바로 로그인 처리 페이지
+            response.sendRedirect(
+                    "http://localhost:3000/kakaologin/" + mdto.getNum()
+            );
         }
-        response.sendRedirect("http://localhost:3000/savekakaoinfo/" + mdto.getNum());
+    }
+
+    @GetMapping("/getMemberByNum")
+    public HashMap<String, Object> getMemberByNum(@RequestParam("num") int num) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("loginUser", ms.getMemberByNum(num));
+        return map;
     }
 
     @PostMapping("/kakaoinfoUpdate")
@@ -218,7 +230,43 @@ public class MemberController {
         return map;
     }
 
+    @GetMapping("/findId")
+    public HashMap<String, Object> findId(
+            @RequestParam("name") String name,
+            @RequestParam("phone") String phone
+    ) {
+        HashMap<String, Object> map = new HashMap<>();
+        String id = ms.findId(name, phone);
+        map.put("id", id);
+        return map;
+    }
 
+    @GetMapping("/findPassCheck")
+    public HashMap<String, Object> findPassCheck(
+            @RequestParam String id,
+            @RequestParam String name,
+            @RequestParam String phone) {
+        HashMap<String, Object> map = new HashMap<>();
+        int result = ms.checkUser(id, name, phone);
+        if(result > 0) map.put("msg", "OK");
+        return map;
+    }
+
+    @PostMapping("/resetPass")
+    public HashMap<String, Object> resetPass(@RequestBody Member member) {
+        HashMap<String, Object> map = new HashMap<>();
+        if(member.getId() == null) {
+            map.put("success", false);
+            map.put("msg", "존재하지 않는 이메일");
+            return map;
+        }
+
+        int result = ms.resetPass(member);
+        map.put("success", result > 0);
+        map.put("msg", result > 0 ? "비밀번호 변경 성공" : "회원 정보 없음");
+
+        return map;
+    }
 
 }
 
