@@ -1,9 +1,9 @@
 package com.fastcam.spserver.service;
 
+import com.fastcam.spserver.dto.ExerciseDto;
 import com.fastcam.spserver.dto.NutritionDto;
 import com.fastcam.spserver.dto.RequestDto;
 import com.fastcam.spserver.dto.ResponseDto;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.http.client.ReactorClientHttpRequestFactory;
@@ -82,5 +82,16 @@ public class AIService {
                         .build())
                 .retrieve()
                 .body(NutritionDto.class);
+    }
+
+    // 운동 소모칼로리 추정
+    public ExerciseDto findExercise(String exName) {
+        return restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/findExercise")
+                        .queryParam("exName", exName)
+                        .build())
+                .retrieve()
+                .body(ExerciseDto.class);
     }
 }
