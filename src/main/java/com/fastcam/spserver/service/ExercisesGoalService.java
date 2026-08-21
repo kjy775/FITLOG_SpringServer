@@ -13,7 +13,18 @@ public class ExercisesGoalService {
     ExercisesGoalRepository egr;
 
     public void insertExercisesGoal(ExercisesGoal exercisesGoal) {
-        egr.save(exercisesGoal);
+        int mnum = exercisesGoal.getMember().getNum();
+        ExercisesGoal existGoal = egr.findByMemberNum(mnum);
+
+        if(existGoal != null) {
+            existGoal.setGoalTime(exercisesGoal.getGoalTime());
+            existGoal.setGoalCalories(exercisesGoal.getGoalCalories());
+            existGoal.setGoalWeight(exercisesGoal.getGoalWeight());
+
+            egr.save(existGoal);
+        } else {
+            egr.save(exercisesGoal);
+        }
     }
 
     public ExercisesGoal getExercisesGoal(int num) {
