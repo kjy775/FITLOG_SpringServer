@@ -37,6 +37,7 @@ public class MemberService {
         mr.save(member);
     }
 
+
     public void updateMember(Member member) {
         Member oldMember = mr.findByNum(member.getNum());
         oldMember.setPass(member.getPass());
@@ -146,5 +147,13 @@ public class MemberService {
 
     public Member getMemberByNum(int num) {
         return mr.findByNum(num);
+    }
+
+    public void insertMemberRole(Member mdto) {
+        MemberRole memberRole = new MemberRole();
+        memberRole.setMember(mdto);
+        memberRole.setRoleName("member");
+
+        mrr.save(memberRole);
     }
 }
