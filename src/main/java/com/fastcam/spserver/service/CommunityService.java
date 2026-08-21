@@ -41,6 +41,9 @@ public class CommunityService {
         Optional<Community> result = cr.findByNum(num);
         if(result.isPresent()) {
             Community community = result.get();
+            rr.deleteByCommunityNum(num);
+            repr.deleteByCommunityNum(num);
+            lr.deleteByCommunityNum(num);
             cr.delete(community);
         }
     }
