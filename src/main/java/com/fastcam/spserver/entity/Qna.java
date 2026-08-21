@@ -21,8 +21,6 @@ public class Qna {
     private Timestamp indate;
     @Column(length = 1000)
     private String reply;
-    private String pass;
-    private String secret;
 
     @ManyToOne
     @JoinColumn(name = "mnum")

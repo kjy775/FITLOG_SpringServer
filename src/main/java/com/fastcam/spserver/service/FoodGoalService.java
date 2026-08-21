@@ -14,10 +14,22 @@ public class FoodGoalService {
     FoodGoalRepository fgr;
 
     public void goalSave(FoodGoal foodGoal) {
-        fgr.save(foodGoal);
+        int mnum = foodGoal.getMember().getNum();
+        FoodGoal existGoal = fgr.findByMemberNum(mnum);
+
+        if (existGoal != null) {
+            existGoal.setGoalCalories(foodGoal.getGoalCalories());
+            existGoal.setGoalCarbs(foodGoal.getGoalCarbs());
+            existGoal.setGoalProtein(foodGoal.getGoalProtein());
+            existGoal.setGoalFat(foodGoal.getGoalFat());
+
+            fgr.save(existGoal);
+        } else {
+            fgr.save(foodGoal);
+        }
     }
 
-    public FoodGoal getFoodGoal(FoodGoal foodGoal) {
-        return fgr.findByNum(foodGoal.getNum());
+    public FoodGoal getFoodGoal(int num) {
+        return fgr.findByNum(num);
     }
 }
