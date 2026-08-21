@@ -26,7 +26,7 @@ public class Community {
     private Timestamp indate;
 
     @Column(columnDefinition = "varchar(1) default 'Y'")
-    private String status;
+    private String status = "Y";
 
     @ManyToOne
     @JoinColumn(name = "mnum")
