@@ -23,10 +23,10 @@ public class FoodGoalController {
         return map;
     }
 
-    @GetMapping("/getFoodGoal")
-    public HashMap<String, Object> getFoodGoal(@RequestBody FoodGoal foodGoal) {
+    @GetMapping("/getFoodGoal/{num}")
+    public HashMap<String, Object> getFoodGoal(@PathVariable("num") int num) {
         HashMap<String, Object> map = new HashMap<>();
-        FoodGoal fg = fgs.getFoodGoal(foodGoal);
+        FoodGoal fg = fgs.getFoodGoal(num);
         map.put("foodGoal", fg);
         return map;
     }

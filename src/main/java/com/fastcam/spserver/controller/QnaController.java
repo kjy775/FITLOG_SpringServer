@@ -15,8 +15,8 @@ public class QnaController {
     QnaService qs;
 
     @GetMapping("/getList")
-    public HashMap<String, Object> qnaList(@RequestParam("page") int page) {
-        HashMap<String, Object> map = qs.getQnaList(page);
+    public HashMap<String, Object> qnaList(@RequestParam("mnum") int mnum) {
+        HashMap<String, Object> map = qs.getQnaList(mnum);
         return map;
     }
 

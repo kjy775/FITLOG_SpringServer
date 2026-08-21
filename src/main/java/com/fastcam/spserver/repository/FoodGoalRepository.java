@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FoodGoalRepository extends JpaRepository<FoodGoal, Integer> {
     FoodGoal findByNum(int num);
+
+    FoodGoal findByMemberNum(int mnum);
 }

@@ -21,27 +21,11 @@ public class QnaService {
     QnaRepository qr;
 
     @Transactional(readOnly = true)
-    public HashMap<String, Object> getQnaList(int page) {
-        if (page < 1) page = 1;
-
+    public HashMap<String, Object> getQnaList(int mnum) {
         HashMap<String, Object> result = new HashMap<>();
 
-        Paging paging = new Paging();
-        paging.setPage(page);
-        paging.setDisplayPage(5);
-        paging.setDisplayRow(5);
-        paging.setTotalCount((int) qr.count());
-        paging.calPaing();
-
-        Pageable pageable = PageRequest.of(
-                page - 1,
-                paging.getDisplayRow(),
-                Sort.by(Sort.Direction.DESC, "qseq")
-        );
-
-        List<Qna> list = qr.findAll(pageable).getContent();
+        List<Qna> list = qr.findByMemberNum(mnum);
         result.put("qnaList", list);
-        result.put("paging", paging);
         return result;
 
     }
