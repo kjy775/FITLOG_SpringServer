@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/weightlog")
@@ -17,7 +18,7 @@ public class WeightLogController {
     @GetMapping("/getWeightLog/{num}")
     public HashMap<String, Object> getWeightLog(@PathVariable("num") int num) {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        WeightLog weightLog = wls.getWeightLog(num);
+        List<WeightLog> weightLog = wls.getWeightLog(num);
         map.put("weightLog", weightLog);
         return map;
     }
