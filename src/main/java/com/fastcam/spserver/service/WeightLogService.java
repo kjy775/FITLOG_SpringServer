@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class WeightLogService {
@@ -19,8 +21,8 @@ public class WeightLogService {
     MemberRepository mr;
 
 
-    public WeightLog getWeightLog(int num) {
-        return wlr.findByNum(num);
+    public List<WeightLog> getWeightLog(int num) {
+        return wlr.findByMemberNum(num);
     }
 
     public void writeWeightLog(WeightLog weightLog) {
