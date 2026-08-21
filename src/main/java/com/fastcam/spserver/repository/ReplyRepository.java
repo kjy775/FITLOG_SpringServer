@@ -1,6 +1,7 @@
 package com.fastcam.spserver.repository;
 
 import com.fastcam.spserver.entity.Reply;
+import com.fastcam.spserver.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

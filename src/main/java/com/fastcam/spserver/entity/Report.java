@@ -11,8 +11,10 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 200)
     private String content;
+    @Column(length = 200)
+    private String memo;
 
     @ManyToOne
     @JoinColumn(name = "cnum")

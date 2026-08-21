@@ -85,13 +85,12 @@ public class CommunityService {
         return rr.findByCommunityNumOrderByIndateDesc(num);
     }
 
-    public List<Community> getUserPost(int mnum) {
-        List<Community> list = cr.findByMemberNumOrderByIndateDesc(mnum);
-        return list;
+    public List<Community> getUserPost(int num) {
+        return cr.findByMemberNumAndStatusOrderByIndateDesc(num, "Y");
     }
 
     public List<Community> getPostList() {
-        return cr.findAllByOrderByIndateDesc();
+        return cr.findByStatusOrderByIndateDesc("Y");
     }
 
     @Autowired
@@ -103,7 +102,7 @@ public class CommunityService {
         for (Follow f : followList) {
             mnums.add(f.getFto());
         }
-        return cr.findByMemberNumInOrderByIndateDesc(mnums);
+        return cr.findByMemberNumInAndStatusOrderByIndateDesc(mnums, "Y");
     }
 
     @Autowired
@@ -113,4 +112,21 @@ public class CommunityService {
         repr.save(report);
     }
 
+    public List<Report> getReportList(String reportStatus) {
+        if(reportStatus.equals("wait")) {
+            return repr.findByMemoIsNull();
+        } else {
+            return repr.findByMemoIsNotNull();
+        }
+    }
+
+    public void processReport(int num, String memo) {
+        Optional<Report> result = repr.findById(num);
+        if(result.isPresent()) {
+            Report report = result.get();
+            report.setMemo(memo);
+            Community community = report.getCommunity();
+            community.setStatus("N");
+        }
+    }
 }

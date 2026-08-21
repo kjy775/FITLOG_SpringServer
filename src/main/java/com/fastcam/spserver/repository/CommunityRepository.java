@@ -8,15 +8,15 @@ import java.util.Optional;
 
 public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
-    List<Community> findAllByOrderByIndateDesc();
-
-    List<Community> findByMemberNumOrderByIndateDesc(int mnum);
-
-    List<Community> findByMemberNumInOrderByIndateDesc(List<Integer> mnums);
-
     List<Community> findByMemberNum(int mnum);
 
     void deleteByMemberNum(int mnum);
 
     Optional<Community> findByNum(int num);
+
+    List<Community> findByStatusOrderByIndateDesc(String y);
+
+    List<Community> findByMemberNumAndStatusOrderByIndateDesc(int num, String status);
+
+    List<Community> findByMemberNumInAndStatusOrderByIndateDesc(List<Integer> mnums, String y);
 }

@@ -1,8 +1,10 @@
 package com.fastcam.spserver.service;
 
+import com.fastcam.spserver.dto.MemberDto;
 import com.fastcam.spserver.entity.Community;
 import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
+import com.fastcam.spserver.entity.MemberRole;
 import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +21,16 @@ public class MemberService {
     @Autowired
     MemberRepository mr;
 
+    @Autowired
+    MemberRoleRepository mrr;
+
     public Member getMemberById(String id) {
         Member member = mr.findById(id);
         return member;
+    }
+
+    public List<MemberRole> getMemberRole(int mnum) {
+        return mrr.findByMemberNum(mnum);
     }
 
     public void insertMember(Member member) {
