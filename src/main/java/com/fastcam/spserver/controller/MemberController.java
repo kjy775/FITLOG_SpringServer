@@ -37,6 +37,7 @@ public class MemberController {
     public HashMap<String, Object> join(@RequestBody Member member){
         HashMap<String, Object> map = new HashMap<String, Object>();
         ms.insertMember( member );
+        ms.insertMemberRole(member);
         map.put("msg", "OK");
         return map;
     }
@@ -186,6 +187,7 @@ public class MemberController {
             mdto.setProvider("KAKAO");
             ms.insertMember(mdto);
             mdto = ms.getMemberById(kakaoProfile.getId());
+            ms.insertMemberRole(mdto);
             response.sendRedirect("http://localhost:3000/savekakaoinfo/" + mdto.getNum());
 
         } else {
