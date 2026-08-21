@@ -1,9 +1,11 @@
 package com.fastcam.spserver.controller;
 
 import com.fastcam.spserver.dto.KakaoProfile;
+import com.fastcam.spserver.dto.MemberDto;
 import com.fastcam.spserver.dto.OAuthToken;
 import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
+import com.fastcam.spserver.entity.MemberRole;
 import com.fastcam.spserver.service.MemberService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
@@ -18,8 +20,10 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/member")
@@ -46,8 +50,30 @@ public class MemberController {
         else if( !mdto.getPass().equals( member.getPass() ) )
             map.put("msg", "아이디 패스워드를 확인하세요");
         else{
+            List<MemberRole> memberRole = ms.getMemberRole(mdto.getNum());
+            MemberDto res = new MemberDto();
+            res.setNum(mdto.getNum());
+            res.setId(mdto.getId());
+            res.setPass(mdto.getPass());
+            res.setName(mdto.getName());
+            res.setBirth(mdto.getBirth());
+            res.setPhone(mdto.getPhone());
+            res.setZipNum(mdto.getZipNum());
+            res.setAdd1(mdto.getAdd1());
+            res.setAdd2(mdto.getAdd2());
+            res.setAdd3(mdto.getAdd3());
+            res.setHeight(mdto.getHeight());
+            res.setWeight(mdto.getWeight());
+            res.setGender(mdto.getGender());
+            res.setProfileImg(mdto.getProfileImg());
+            res.setProvider(mdto.getProvider());
+            List<String> roles = new ArrayList<>();
+            for(MemberRole mr : memberRole){
+                roles.add(mr.getRoleName());
+            }
+            res.setRole_names(roles);
             map.put("msg", "OK");
-            map.put("loginUser", mdto);
+            map.put("loginUser", res);
         }
         return map;
     }

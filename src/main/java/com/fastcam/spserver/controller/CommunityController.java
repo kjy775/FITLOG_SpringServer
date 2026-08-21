@@ -131,5 +131,23 @@ public class CommunityController {
         return map;
     }
 
+    @GetMapping("/reportList")
+    public HashMap<String, Object> reportList(@RequestParam("status") String status) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("reportList", cs.getReportList(status));
+
+        return map;
+    }
+
+    @PostMapping("/processReport")
+    public HashMap<String, Object> processReport(
+            @RequestParam("num") int num,
+            @RequestParam("memo") String memo) {
+        HashMap<String, Object> map = new HashMap<>();
+        cs.processReport(num, memo);
+        map.put("msg", "OK");
+        return map;
+    }
+
 
 }

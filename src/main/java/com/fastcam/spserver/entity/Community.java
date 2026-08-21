@@ -25,6 +25,9 @@ public class Community {
     @Column(columnDefinition = "datetime default now()")
     private Timestamp indate;
 
+    @Column(columnDefinition = "varchar(1) default 'Y'")
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "mnum")
     private Member member;
