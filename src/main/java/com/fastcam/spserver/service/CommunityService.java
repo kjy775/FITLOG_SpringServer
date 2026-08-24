@@ -1,5 +1,6 @@
 package com.fastcam.spserver.service;
 
+import com.fastcam.spserver.dto.Paging;
 import com.fastcam.spserver.entity.*;
 import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,24 +87,101 @@ public class CommunityService {
         return rr.findByCommunityNumOrderByIndateDesc(num);
     }
 
-    public List<Community> getUserPost(int num) {
-        return cr.findByMemberNumAndStatusOrderByIndateDesc(num, "Y");
+    public HashMap<String, Object> getUserPost(int mnum, int page) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        Paging paging = new Paging();
+        paging.setPage(page);
+
+        int count = cr.countByMemberNumAndStatus(mnum, "Y");
+
+        paging.setTotalCount(count);
+        paging.calPaging();
+
+        List<Community> list = cr.getUserPost(
+                mnum,
+                "Y",
+                paging.getStartNum(),
+                paging.getDisplayRow()
+        );
+
+        map.put("postList", list);
+        map.put("paging", paging);
+
+        return map;
     }
 
-    public List<Community> getPostList() {
-        return cr.findByStatusOrderByIndateDesc("Y");
+    public HashMap<String, Object> getPostList(int page) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        Paging paging = new Paging();
+        paging.setPage(page);
+
+        int count = cr.countByStatus("Y");
+
+        paging.setTotalCount(count);
+        paging.calPaging();
+
+        List<Community> list = cr.getPostList(
+                "Y",
+                paging.getStartNum(),
+                paging.getDisplayRow()
+        );
+
+        map.put("postList", list);
+        map.put("paging", paging);
+
+        return map;
     }
 
     @Autowired
     FollowRepository fr;
 
-    public List<Community> getFollowingsPost(int mnum) {
+    public HashMap<String, Object> getFollowingsPost(int mnum, int page) {
+        HashMap<String, Object> map = new HashMap<>();
+
         List<Follow> followList = fr.findByFfrom(mnum);
+
         List<Integer> mnums = new ArrayList<>();
+
         for (Follow f : followList) {
             mnums.add(f.getFto());
         }
-        return cr.findByMemberNumInAndStatusOrderByIndateDesc(mnums, "Y");
+
+        Paging paging = new Paging();
+        paging.setPage(page);
+
+        if (mnums.isEmpty()) {
+            paging.setTotalCount(0);
+            paging.calPaging();
+
+            map.put("postList", new ArrayList<>());
+            map.put("paging", paging);
+
+            return map;
+        }
+
+        // 팔로우한 사람들의 게시글 전체 개수
+        List<Community> allList =
+                cr.findByMemberNumInAndStatusOrderByIndateDesc(mnums, "Y");
+
+        int count = allList.size();
+
+        paging.setTotalCount(count);
+        paging.calPaging();
+
+        // 현재 페이지 게시글
+        List<Community> list = cr.getFollowingsPost(
+                mnums,
+                "Y",
+                paging.getStartNum(),
+                paging.getDisplayRow()
+        );
+
+        map.put("postList", list);
+        map.put("paging", paging);
+
+        return map;
     }
 
     @Autowired

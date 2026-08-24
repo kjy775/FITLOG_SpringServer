@@ -37,10 +37,27 @@ public class QnaController {
     }
 
     @DeleteMapping("/deleteQna")
-    public HashMap<String, Object> deleteQna(@PathVariable("num") int num) {
+    public HashMap<String, Object> deleteQna(@RequestParam("num") int num) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         qs.deleteBoard(num);
         map.put("msg", "OK");
+        return map;
+    }
+
+    @PostMapping("/replyQna")
+    public HashMap<String, Object> answerQna(
+            @RequestParam("num") int num,
+            @RequestParam("reply") String reply) {
+        HashMap<String, Object> map = new HashMap<>();
+        qs.replyQna(num, reply);
+        map.put("msg", "OK");
+        return map;
+    }
+
+    @GetMapping("/getAllList")
+    public HashMap<String, Object> getAllList(@RequestParam("status") String status) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("qnaList", qs.getAllList(status));
         return map;
     }
 }

@@ -30,6 +30,6 @@ public class FoodGoalService {
     }
 
     public FoodGoal getFoodGoal(int num) {
-        return fgr.findByNum(num);
+        return fgr.findByMemberNum(num);
     }
 }
