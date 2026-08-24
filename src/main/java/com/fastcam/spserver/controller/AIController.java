@@ -17,19 +17,17 @@ import java.util.Map;
 public class AIController {
 
     @Autowired
-    AIService aiService;
+    AIService as;
 
     @PostMapping("/query")
-    public ResponseEntity<ResponseDto> askAI(@RequestBody RequestDto req) {
-        System.out.println("요청 : " + req.getQuery());
-        ResponseDto res = aiService.askAI(req);
-        System.out.println("응답 : " + res);
+    public ResponseEntity<ResponseDto> query(@RequestBody RequestDto req) {
+        ResponseDto res = as.query(req);
         return ResponseEntity.ok(res);
     }
 
     @PostMapping("/findFood")
     public Map<String, Object> findFood(@RequestParam("image") MultipartFile file) {
-        return aiService.findFood(file);
+        return as.findFood(file);
     }
 
 }
