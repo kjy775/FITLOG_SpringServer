@@ -138,6 +138,13 @@ public class AIService {
     public HashMap<String, Object> getUserGoal(int mnum) {
         HashMap<String, Object> res = new HashMap<>();
         FoodGoal fg = fgr.findByMemberNum(mnum);
+        if (fg == null) {
+            res.put("targetCalories", null);
+            res.put("targetCarbsG", null);
+            res.put("targetProteinG", null);
+            res.put("targetFatG", null);
+            return res;
+        }
         res.put("targetCalories",fg.getGoalCalories());
         res.put("targetCarbsG",fg.getGoalCarbs());
         res.put("targetProteinG",fg.getGoalProtein());
