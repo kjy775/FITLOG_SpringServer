@@ -1,17 +1,20 @@
 package com.fastcam.spserver.service;
 
+import com.fastcam.spserver.entity.ExercisesLog;
+import com.fastcam.spserver.entity.FoodLog;
 import com.fastcam.spserver.entity.WeightLog;
 import com.fastcam.spserver.repository.ExercisesLogRepository;
 import com.fastcam.spserver.repository.FoodLogRepository;
 import com.fastcam.spserver.repository.WeightLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Transactional
@@ -41,25 +44,87 @@ public class StatisticsService {
         LocalDate selectedDate = LocalDate.parse(date);
         LocalDate startDate;
         LocalDate endDate;
-        int days;
         if("month".equals(period)) {
             YearMonth yearMonth = YearMonth.from(selectedDate);
-
             startDate = yearMonth.atDay(1);
             endDate = yearMonth.atEndOfMonth();
 
-            days = yearMonth.lengthOfMonth();
-        } else if ("week".equals(period)) {
-            startDate = selectedDate.minusDays(selectedDate.getDayOfWeek().getValue() - 1);
+        } else {
+            startDate = selectedDate.minusDays(
+                    selectedDate.getDayOfWeek().getValue() - 1);
 
-            endDate = selectedDate;
-            days = (int)(endDate.toEpochDay() - startDate.toEpochDay()) + 1;
+            endDate = startDate.plusDays(6);
         }
+        Timestamp start =
+                Timestamp.valueOf(startDate.atStartOfDay());
 
-        //건강 통계 요약 - 총 운동 소비
+        Timestamp end =
+                Timestamp.valueOf(endDate.plusDays(1).atStartOfDay().minusNanos(1));
 
+        //현재 체중 기록
+        List<WeightLog> weightList =
+                wlr.findByMemberNumAndIndateBetweenOrderByIndateDesc(
+                        id,
+                        start,
+                        end
+                );
 
-        //건강 통계 요약 - 일평균 식사 섭취
+        result.put("weightList", weightList);
+
+        //최근 운동 기록
+        List<ExercisesLog> exerciseList =
+                elr.findByMemberNumAndIndateBetweenOrderByIndateDesc(
+                        id,
+                        start,
+                        end
+                );
+
+        //총 운동 소비 칼로리
+        int totalExerciseCalories = exerciseList.stream()
+                .mapToInt(ExercisesLog::getCalories)
+                .sum();
+
+        result.put(
+                "totalExerciseCalories",
+                totalExerciseCalories
+        );
+
+        result.put("exerciseList", exerciseList);
+
+        //최근 식사 기록
+        List<FoodLog> foodList =
+                flr.findByMemberNumAndIndateBetweenOrderByIndateDesc(
+                        id,
+                        start,
+                        end
+                );
+
+        result.put("foodList", foodList);
+
+        //총 식사 섭취 칼로리
+        int totalFoodCalories = foodList.stream()
+                .mapToInt(FoodLog::getCalories)
+                .sum();
+
+        result.put(
+                "totalFoodCalories",
+                totalFoodCalories
+        );
+
+        //일평균 식사 섭취
+        int days =
+                (int) (endDate.toEpochDay()
+                        - startDate.toEpochDay()) + 1;
+
+        double averageFoodCalories =
+                days > 0
+                        ? (double) totalFoodCalories / days
+                        : 0;
+
+        result.put(
+                "averageFoodCalories",
+                averageFoodCalories
+        );
 
 
 

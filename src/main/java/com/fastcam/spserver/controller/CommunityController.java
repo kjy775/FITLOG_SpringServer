@@ -102,25 +102,24 @@ public class CommunityController {
     }
 
     @GetMapping("/userPost")
-    public HashMap<String, Object> userPost(@RequestParam("mnum") int mnum) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("postList", cs.getUserPost(mnum));
-        return map;
+    public HashMap<String, Object> userPost(
+            @RequestParam("mnum") int mnum,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        return cs.getUserPost(mnum, page);
     }
 
 
     @GetMapping("/getPostList")
-    public HashMap<String, Object> getPostList() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("postList", cs.getPostList());
-        return map;
+    public HashMap<String, Object> getPostList(
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        return cs.getPostList(page);
     }
 
     @GetMapping("/followingPost")
-    public HashMap<String, Object> followingsPost(@RequestParam("mnum") int mnum) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("postList", cs.getFollowingsPost(mnum));
-        return map;
+    public HashMap<String, Object> followingsPost(
+            @RequestParam("mnum") int mnum,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        return cs.getFollowingsPost(mnum, page);
     }
 
     @PostMapping("/report")

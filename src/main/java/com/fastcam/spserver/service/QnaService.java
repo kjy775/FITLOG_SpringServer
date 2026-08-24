@@ -41,4 +41,18 @@ public class QnaService {
     public void deleteBoard(int num) {
         qr.deleteByNum(num);
     }
+
+    public void replyQna(int num, String reply) {
+        Qna qna = qr.findById(num).get();
+        qna.setReply(reply);
+        qr.save(qna);
+    }
+
+    public List<Qna> getAllList(String status) {
+        if ("wait".equals(status)) return qr.findByReplyIsNull();
+
+        if ("done".equals(status)) return qr.findByReplyIsNotNull();
+
+        return qr.findAll();
+    }
 }
