@@ -14,4 +14,8 @@ public interface QnaRepository extends JpaRepository<Qna, Integer> {
     Qna findByNum(int num);
 
     List<Qna> findByMemberNum(int mnum);
+
+    List<Qna> findByReplyIsNull();
+
+    List<Qna> findByReplyIsNotNull();
 }
