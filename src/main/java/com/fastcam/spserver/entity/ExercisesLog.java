@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -25,9 +26,7 @@ public class ExercisesLog {
     private int exerciseTime;
     private int calories;
 
-    @CreationTimestamp
-    @Column(columnDefinition = "datetime default now()")
-    private Timestamp indate;
+    private LocalDate indate;
 
     @ManyToOne
     @JoinColumn(name = "mnum")
