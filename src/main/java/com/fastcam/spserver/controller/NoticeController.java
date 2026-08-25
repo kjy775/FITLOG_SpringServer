@@ -38,6 +38,21 @@ public class NoticeController {
         return map;
     }
 
+    @GetMapping("/getAllList")
+    public HashMap<String, Object> getAllList() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("list", ns.getAllList());
+        return map;
+    }
+
+    @GetMapping("/getNotice/{num}")
+    public HashMap<String, Object> getNotice(@PathVariable("num") int num) {
+        HashMap<String, Object> map = new HashMap<>();
+        Notice notice = ns.getNotice(num);
+        map.put("notice", notice);
+        return map;
+    }
+
 
 
 }

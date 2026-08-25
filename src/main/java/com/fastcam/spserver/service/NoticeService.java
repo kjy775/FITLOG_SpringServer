@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,5 +36,13 @@ public class NoticeService {
             Notice notice = result.get();
             nr.delete(notice);
         }
+    }
+
+    public List<Notice> getAllList() {
+        return nr.findAll();
+    }
+
+    public Notice getNotice(int num) {
+        return nr.findByNum(num).orElse(null);
     }
 }
