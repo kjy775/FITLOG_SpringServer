@@ -19,6 +19,7 @@ public class WeightLogController {
     public HashMap<String, Object> getWeightLog(@PathVariable("num") int num) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         List<WeightLog> weightLog = wls.getWeightLog(num);
+        map.put("weightGoal", wls.getWeightGoal(num));
         map.put("weightLog", weightLog);
         return map;
     }
