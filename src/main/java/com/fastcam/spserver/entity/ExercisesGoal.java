@@ -13,7 +13,6 @@ public class ExercisesGoal {
     private int goalTime;
     private int goalCalories;
     private float goalWeight;
-    private String status;
 
     @ManyToOne
     @JoinColumn(name = "mnum")

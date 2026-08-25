@@ -14,7 +14,6 @@ public class FoodGoal {
     private float goalCarbs;
     private float goalProtein;
     private float goalFat;
-    private String status;
 
     @ManyToOne
     @JoinColumn(name = "mnum")
