@@ -2,9 +2,7 @@ package com.fastcam.spserver.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -21,9 +19,7 @@ public class FoodLog {
     private float fat;
     private int calories;
 
-    @CreationTimestamp
-    @Column(columnDefinition = "datetime default now()")
-    private Timestamp indate;
+    private LocalDate indate;
 
     @ManyToOne
     @JoinColumn(name = "mnum")
