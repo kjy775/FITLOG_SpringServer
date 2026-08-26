@@ -10,4 +10,6 @@ public interface ExercisesLogRepository extends JpaRepository<ExercisesLog, Inte
     List<ExercisesLog> findByMemberNum(int mnum);
 
     List<ExercisesLog> findByMemberNumAndIndateBetweenOrderByIndateDesc(int id, Timestamp start, Timestamp end);
+
+    void deleteByMemberNum(int mnum);
 }

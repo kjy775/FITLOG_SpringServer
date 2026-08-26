@@ -24,6 +24,9 @@ public class MemberService {
     @Autowired
     MemberRoleRepository mrr;
 
+    @Autowired
+    ReportRepository repr;
+
     public Member getMemberById(String id) {
         Member member = mr.findById(id);
         return member;
@@ -83,6 +86,24 @@ public class MemberService {
     @Autowired
     LikeRepository lr;
 
+    @Autowired
+    FoodLogRepository flr;
+
+    @Autowired
+    ExercisesLogRepository elr;
+
+    @Autowired
+    WeightLogRepository wlr;
+
+    @Autowired
+    ExercisesGoalRepository egr;
+
+    @Autowired
+    FoodGoalRepository fgr;
+
+    @Autowired
+    ChatRepository chatr;
+
     @Transactional
     public void deleteMember(String id) {
         Member member = mr.findById(id);
@@ -100,13 +121,24 @@ public class MemberService {
 
             rr.deleteByCommunityNum(cnum);
             lr.deleteByCommunityNum(cnum);
+            repr.deleteByCommunityNum(cnum);
         }
         mrr.deleteByMemberNum(mnum);
         rr.deleteByMemberNum(mnum);
         lr.deleteByMemberNum(mnum);
         cr.deleteByMemberNum(mnum);
+
         fr.deleteByFfrom(mnum);
         fr.deleteByFto(mnum);
+
+        flr.deleteByMemberNum(mnum);
+        elr.deleteByMemberNum(mnum);
+        wlr.deleteByMemberNum(mnum);
+        fgr.deleteByMemberNum(mnum);
+        egr.deleteByMemberNum(mnum);
+
+        chatr.deleteByMemberNum(mnum);
+
 
         mr.delete(member);
     }

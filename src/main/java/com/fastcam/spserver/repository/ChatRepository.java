@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
     List<Chat> findByMemberNumOrderByNum(int mnum);
+
+    void deleteByMemberNum(int mnum);
 }
