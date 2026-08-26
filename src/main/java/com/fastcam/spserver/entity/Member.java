@@ -17,6 +17,8 @@ public class Member {
     private int num;
     @Column(nullable = false)
     private String id;
+    @Column(length = 100)
+    private String snsid;
     private String pass;
     @Column(nullable = false)
     private String name;
