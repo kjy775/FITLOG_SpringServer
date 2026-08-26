@@ -23,4 +23,6 @@ public class MemberDto {
     private String profileImg;
     private String provider;
     private List<String> role_names;
+
 }
+

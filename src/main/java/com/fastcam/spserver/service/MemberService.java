@@ -59,10 +59,17 @@ public class MemberService {
         Member old = mr.findByNum(member.getNum());
         if (old == null) return null;
 
+        old.setId(member.getId());
+        old.setPass(member.getPass());
+        old.setName(member.getName());
+        old.setPhone(member.getPhone());
+        old.setProfileImg(member.getProfileImg());
+
         old.setGender(member.getGender());
         old.setBirth(member.getBirth());
         old.setHeight(member.getHeight());
         old.setWeight(member.getWeight());
+
 
         return old;
     }
@@ -94,7 +101,7 @@ public class MemberService {
             rr.deleteByCommunityNum(cnum);
             lr.deleteByCommunityNum(cnum);
         }
-
+        mrr.deleteByMemberNum(mnum);
         rr.deleteByMemberNum(mnum);
         lr.deleteByMemberNum(mnum);
         cr.deleteByMemberNum(mnum);
@@ -155,5 +162,9 @@ public class MemberService {
         memberRole.setRoleName("member");
 
         mrr.save(memberRole);
+    }
+
+    public Member getMemberBySnsid(String id) {
+        return mr.findBySnsid(id);
     }
 }

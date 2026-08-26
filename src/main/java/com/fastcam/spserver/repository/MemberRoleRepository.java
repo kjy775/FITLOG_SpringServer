@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MemberRoleRepository extends JpaRepository<MemberRole, Integer> {
     List<MemberRole> findByMemberNum(int num);
+
+    void deleteByMemberNum(int mnum);
 }

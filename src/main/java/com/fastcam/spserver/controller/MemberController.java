@@ -177,11 +177,12 @@ public class MemberController {
         System.out.println("Profile-Nickname : " + ac.getProfile().getNickname());
         System.out.println("Profile-pfimg : " + pf.getProfile_image_url());
 
-        Member mdto = ms.getMemberById(kakaoProfile.getId());
+        Member mdto = ms.getMemberBySnsid(kakaoProfile.getId());
 
         if (mdto == null) {
             mdto = new Member();
             mdto.setId(kakaoProfile.getId());
+            mdto.setSnsid(kakaoProfile.getId());
             mdto.setName(ac.getProfile().getNickname());
             mdto.setProfileImg(pf.getProfile_image_url());
             mdto.setProvider("KAKAO");
