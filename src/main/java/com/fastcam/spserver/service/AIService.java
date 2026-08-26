@@ -156,11 +156,8 @@ public class AIService {
         HashMap<String, Object> res = new HashMap<>();
         LocalDate today = LocalDate.now();
 
-        LocalDateTime start = today.atStartOfDay();
-        LocalDateTime end = today.plusDays(1).atStartOfDay();
-
         List<FoodLog> flList =
-                flr.findByMemberNumAndIndateBetween(mnum, start, end);
+                flr.findByMemberNumAndIndate(mnum, today);
 
         int cal = 0;
         float carbs = 0.0f;
@@ -168,9 +165,9 @@ public class AIService {
         float fat = 0.0f;
         for(FoodLog fl : flList){
             cal += fl.getCalories();
-            carbs = fl.getCarbs();
-            protein = fl.getProtein();
-            fat = fl.getFat();
+            carbs += fl.getCarbs();
+            protein += fl.getProtein();
+            fat += fl.getFat();
         }
 
         res.put("calories",cal);
