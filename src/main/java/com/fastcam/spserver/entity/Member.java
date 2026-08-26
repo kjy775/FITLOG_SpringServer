@@ -22,15 +22,7 @@ public class Member {
     private String pass;
     @Column(nullable = false)
     private String name;
-    private LocalDate birth;
     private String phone;
-    private String zipNum;
-    private String add1;
-    private String add2;
-    private String add3;
-    private String height;
-    private String weight;
-    private String gender;
     @Column(length = 500)
     private String profileImg;
     @Column(columnDefinition = "varchar(20) default 'LOCAL'")

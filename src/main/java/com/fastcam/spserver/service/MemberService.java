@@ -47,32 +47,15 @@ public class MemberService {
         oldMember.setName(member.getName());
         oldMember.setPhone(member.getPhone());
         oldMember.setProfileImg(member.getProfileImg());
-        oldMember.setBirth(member.getBirth());
-
-        oldMember.setHeight(member.getHeight());
-        oldMember.setWeight(member.getWeight());
-
-        oldMember.setZipNum(member.getZipNum());
-        oldMember.setAdd1(member.getAdd1());
-        oldMember.setAdd2(member.getAdd2());
-        oldMember.setAdd3(member.getAdd3());
     }
 
     public Member updateKakaoInfo(Member member) {
         Member old = mr.findByNum(member.getNum());
         if (old == null) return null;
-
-        old.setId(member.getId());
         old.setPass(member.getPass());
         old.setName(member.getName());
         old.setPhone(member.getPhone());
         old.setProfileImg(member.getProfileImg());
-
-        old.setGender(member.getGender());
-        old.setBirth(member.getBirth());
-        old.setHeight(member.getHeight());
-        old.setWeight(member.getWeight());
-
 
         return old;
     }

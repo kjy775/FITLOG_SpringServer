@@ -57,15 +57,7 @@ public class MemberController {
             res.setId(mdto.getId());
             res.setPass(mdto.getPass());
             res.setName(mdto.getName());
-            res.setBirth(mdto.getBirth());
             res.setPhone(mdto.getPhone());
-            res.setZipNum(mdto.getZipNum());
-            res.setAdd1(mdto.getAdd1());
-            res.setAdd2(mdto.getAdd2());
-            res.setAdd3(mdto.getAdd3());
-            res.setHeight(mdto.getHeight());
-            res.setWeight(mdto.getWeight());
-            res.setGender(mdto.getGender());
             res.setProfileImg(mdto.getProfileImg());
             res.setProvider(mdto.getProvider());
             List<String> roles = new ArrayList<>();
