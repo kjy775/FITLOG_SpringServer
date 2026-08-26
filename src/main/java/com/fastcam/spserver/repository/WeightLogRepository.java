@@ -12,4 +12,6 @@ public interface WeightLogRepository extends JpaRepository<WeightLog, Integer> {
     WeightLog findTopByMember_NumOrderByIndateDesc(int id);
 
     List<WeightLog> findByMemberNumAndIndateBetweenOrderByIndateDesc(int id, Timestamp start, Timestamp end);
+
+    void deleteByMemberNum(int mnum);
 }

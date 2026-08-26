@@ -14,4 +14,6 @@ public interface FoodLogRepository extends JpaRepository<FoodLog, Integer> {
     List<FoodLog> findByMemberNumAndIndateBetweenOrderByIndateDesc(int id, Timestamp start, Timestamp end);
 
     List<FoodLog> findByMemberNumAndIndate(int mnum, LocalDate today);
+
+    void deleteByMemberNum(int mnum);
 }
