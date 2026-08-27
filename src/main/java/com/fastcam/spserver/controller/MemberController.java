@@ -1,11 +1,12 @@
 package com.fastcam.spserver.controller;
 
 import com.fastcam.spserver.dto.KakaoProfile;
-import com.fastcam.spserver.dto.MemberDto;
 import com.fastcam.spserver.dto.OAuthToken;
 import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
 import com.fastcam.spserver.entity.MemberRole;
+import com.fastcam.spserver.security.util.CustomJWTException;
+import com.fastcam.spserver.security.util.JWTUtil;
 import com.fastcam.spserver.service.MemberService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
@@ -20,10 +21,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/member")
@@ -42,34 +40,34 @@ public class MemberController {
         return map;
     }
 
-    @PostMapping("/loginLocal")
-    public HashMap<String, Object> loginLocal(@RequestBody Member member){
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        Member mdto = ms.getMemberById( member.getId() );
-        if( mdto == null)
-            map.put("msg", "아이디 패스워드를 확인하세요");
-        else if( !mdto.getPass().equals( member.getPass() ) )
-            map.put("msg", "아이디 패스워드를 확인하세요");
-        else{
-            List<MemberRole> memberRole = ms.getMemberRole(mdto.getNum());
-            MemberDto res = new MemberDto();
-            res.setNum(mdto.getNum());
-            res.setId(mdto.getId());
-            res.setPass(mdto.getPass());
-            res.setName(mdto.getName());
-            res.setPhone(mdto.getPhone());
-            res.setProfileImg(mdto.getProfileImg());
-            res.setProvider(mdto.getProvider());
-            List<String> roles = new ArrayList<>();
-            for(MemberRole mr : memberRole){
-                roles.add(mr.getRoleName());
-            }
-            res.setRole_names(roles);
-            map.put("msg", "OK");
-            map.put("loginUser", res);
-        }
-        return map;
-    }
+//    @PostMapping("/loginLocal")
+//    public HashMap<String, Object> loginLocal(@RequestBody Member member){
+//        HashMap<String, Object> map = new HashMap<String, Object>();
+//        Member mdto = ms.getMemberById( member.getId() );
+//        if( mdto == null)
+//            map.put("msg", "아이디 패스워드를 확인하세요");
+//        else if( !mdto.getPass().equals( member.getPass() ) )
+//            map.put("msg", "아이디 패스워드를 확인하세요");
+//        else{
+//            List<MemberRole> memberRole = ms.getMemberRole(mdto.getNum());
+//            MemberDto res = new MemberDto();
+//            res.setNum(mdto.getNum());
+//            res.setId(mdto.getId());
+//            res.setPass(mdto.getPass());
+//            res.setName(mdto.getName());
+//            res.setPhone(mdto.getPhone());
+//            res.setProfileImg(mdto.getProfileImg());
+//            res.setProvider(mdto.getProvider());
+//            List<String> roles = new ArrayList<>();
+//            for(MemberRole mr : memberRole){
+//                roles.add(mr.getRoleName());
+//            }
+//            res.setRole_names(roles);
+//            map.put("msg", "OK");
+//            map.put("loginUser", res);
+//        }
+//        return map;
+//    }
 
     @Autowired
     ServletContext sc;
@@ -287,6 +285,55 @@ public class MemberController {
         map.put("msg", result > 0 ? "비밀번호 변경 성공" : "회원 정보 없음");
 
         return map;
+    }
+
+
+    @GetMapping("/refresh/{refreshToken}")
+    public HashMap<String, Object> refresh(
+            @PathVariable("refreshToken") String refreshToken ,
+            @RequestHeader("Authorization") String authHeader   ) throws CustomJWTException {
+        HashMap<String, Object> result = new HashMap<>();
+
+        if( refreshToken == null || refreshToken.equals("") )
+            throw  new CustomJWTException("NULL_REFRESH");
+        if( authHeader == null || authHeader.length() < 7 )
+            throw new CustomJWTException("INVALID_HEADER");
+
+        String accessToken = authHeader.substring(7);
+
+        // 기한 만료 체크
+        boolean expiredResult = true;
+        try {
+            JWTUtil.validateToken( accessToken );
+        } catch (CustomJWTException e) {
+            if( e.getMessage().equals("Expired") ) expiredResult=false;
+        }
+
+        if( expiredResult ){  // 유효기한 만료전
+            System.out.println("토큰 유료기간 만료전... 계속 사용");
+            result.put("accessToken", accessToken);
+            result.put("refreshToken", refreshToken);
+        }else{ // 유효기한 만료 후
+            System.out.println("토큰 유료기간 만료후... 토큰 교체");
+            // 리프레시 토큰에서 claims 를 추출
+            Map<String, Object> claims = JWTUtil.validateToken(refreshToken);
+            // 추출한 claims 로 accessToken 재발급
+            String newAccessToken = JWTUtil.generateToken(claims, 1);
+
+            String newRefreshToken = "";
+            int exp = (Integer)claims.get("exp");
+            java.util.Date expDate = new java.util.Date( (long)exp * (1000 ));//밀리초로 변환
+            long gap = expDate.getTime() - System.currentTimeMillis();//현재 시간과의 차이 계산
+            long leftMin = gap / (1000 * 60); //분단위 변환
+            if(  leftMin < 60  )  // 한시간 미만으로 남았으면 토큰 교체
+                newRefreshToken = JWTUtil.generateToken(claims, 60*24);
+            else
+                newRefreshToken = refreshToken;
+
+            result.put("accessToken", newAccessToken);
+            result.put("refreshToken", newRefreshToken);
+        }
+        return result;
     }
 
 }
