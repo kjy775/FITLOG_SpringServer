@@ -1,6 +1,5 @@
 package com.fastcam.spserver.service;
 
-import com.fastcam.spserver.dto.MemberDto;
 import com.fastcam.spserver.entity.Community;
 import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
