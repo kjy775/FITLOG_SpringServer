@@ -25,18 +25,12 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("loadUserByUsername call - username : " + username + " ------");
 
-        Member member = mr.findByNum(num);
+        Member member = mr.findById(username);
         if(member == null) {
             throw new UsernameNotFoundException(username + " - User Not Found");
         }
 
         // username 권한 목록 검색 및 리스트 작성
-        List<MemberRole> list = mrr.findByMemberNum(num);
-        List<String> roleList = new ArrayList<>();
-        for(MemberRole memberrole : list) {
-            String grade = memberrole.getGrade();
-            roleList.add(grade); // "User"가 저장 또는 "User"와 "Admin" 저장
-        }
         List<MemberRole> mrList = mrr.findByMemberNum(member.getNum());
         List<String> mrsList = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package com.fastcam.spserver.controller;
 
 import com.fastcam.spserver.dto.KakaoProfile;
+import com.fastcam.spserver.dto.MemberDto;
 import com.fastcam.spserver.dto.OAuthToken;
 import com.fastcam.spserver.entity.Follow;
 import com.fastcam.spserver.entity.Member;
@@ -75,7 +76,7 @@ public class MemberController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload(@RequestParam("image") MultipartFile file){
         HashMap<String, Object> map = new HashMap<String, Object>();
-        String path = sc.getRealPath("/member");
+        String path = sc.getRealPath("/image/member");
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();
@@ -182,7 +183,6 @@ public class MemberController {
             response.sendRedirect("http://localhost:3000/savekakaoinfo/" + mdto.getNum());
 
         } else {
-
             // 기존 회원 → 바로 로그인 처리 페이지
             response.sendRedirect(
                     "http://localhost:3000/kakaologin/" + mdto.getNum()
@@ -193,7 +193,19 @@ public class MemberController {
     @GetMapping("/getMemberByNum")
     public HashMap<String, Object> getMemberByNum(@RequestParam("num") int num) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("loginUser", ms.getMemberByNum(num));
+        Member member = ms.getMemberByNum(num);
+        List<MemberRole> mrList = ms.getMemberRole(num);
+        List<String> mrsList = new ArrayList<>();
+        for(MemberRole mr : mrList){
+            mrsList.add(mr.getRoleName());
+        }
+        MemberDto mdto = new MemberDto(member, mrsList);
+        String accessToken = JWTUtil.generateToken(mdto.getClaims(), 1);
+        String refreshToken = JWTUtil.generateToken(mdto.getClaims(), 60*24);
+
+        map.put("loginUser", mdto.getClaims());
+        map.put("accessToken",accessToken);
+        map.put("refreshToken",refreshToken);
         return map;
     }
 
@@ -205,8 +217,22 @@ public class MemberController {
         if (loginUser == null) {
             map.put("msg", "회원 정보를 찾을 수 없습니다.");
         } else {
+
             map.put("msg", "OK");
-            map.put("loginUser", loginUser);
+
+            List<MemberRole> mrList = ms.getMemberRole(loginUser.getNum());
+            List<String> mrsList = new ArrayList<>();
+            for(MemberRole mr : mrList){
+                mrsList.add(mr.getRoleName());
+            }
+            MemberDto mdto = new MemberDto(member, mrsList);
+            String accessToken = JWTUtil.generateToken(mdto.getClaims(), 1);
+            String refreshToken = JWTUtil.generateToken(mdto.getClaims(), 60*24);
+
+            map.put("loginUser", mdto.getClaims());
+            map.put("accessToken",accessToken);
+            map.put("refreshToken",refreshToken);
+//            map.put("loginUser", loginUser);
         }
         return map;
     }

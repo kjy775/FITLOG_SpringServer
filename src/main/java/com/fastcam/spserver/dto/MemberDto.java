@@ -1,11 +1,9 @@
 package com.fastcam.spserver.dto;
 
 import com.fastcam.spserver.entity.Member;
-import lombok.Data;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +42,7 @@ public class MemberDto extends User {
 
         dataMap.put("num", num);
         dataMap.put("id", id);
+        dataMap.put("pass",pass);
         dataMap.put("name", name);
         dataMap.put("phone", phone);
         dataMap.put("profileImg", profileImg);

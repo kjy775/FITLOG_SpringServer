@@ -25,7 +25,7 @@ public class FoodLogController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload(@RequestParam("image") MultipartFile file) {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        String path = sc.getRealPath("/community");
+        String path = sc.getRealPath("/image/community");
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();

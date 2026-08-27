@@ -21,7 +21,7 @@ import java.util.Arrays;
 @Configuration
 public class CustomSecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Security Filter Chain - Security Config Start -------------");
 
         // cors
