@@ -6,6 +6,7 @@ import com.fastcam.spserver.entity.Member;
 import com.fastcam.spserver.entity.MemberRole;
 import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,8 @@ public class MemberService {
     }
 
     public void insertMember(Member member) {
+        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+        member.setPass( pe.encode( member.getPass()));
         mr.save(member);
     }
 
@@ -51,7 +54,8 @@ public class MemberService {
     public Member updateKakaoInfo(Member member) {
         Member old = mr.findByNum(member.getNum());
         if (old == null) return null;
-        old.setPass(member.getPass());
+        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+        old.setPass( pe.encode( member.getPass()));
         old.setName(member.getName());
         old.setPhone(member.getPhone());
         old.setProfileImg(member.getProfileImg());
