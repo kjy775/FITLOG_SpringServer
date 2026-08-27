@@ -165,8 +165,9 @@ public class MemberService {
 
     public int resetPass(Member member) {
         Member oldMember = mr.findById(member.getId());
+        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
         if(oldMember == null) return 0;
-        oldMember.setPass(member.getPass());
+        oldMember.setPass(pe.encode(member.getPass()));
         return 1;
     }
 

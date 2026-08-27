@@ -98,6 +98,17 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         if(path.startsWith("/member/refresh"))
             return true;
+        if(path.startsWith("/favicon.ico"))
+            return true;
+        if(path.startsWith("/member/resetPass"))
+            return true;
+        if(path.startsWith("/member/findPassCheck"))
+            return true;
+        if(path.startsWith("/member/findId"))
+            return true;
+        if(path.startsWith("/chat"))
+            return true;
+
         return false;
     }
 }

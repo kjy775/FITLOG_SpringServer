@@ -173,6 +173,7 @@ public class MemberController {
         if (mdto == null) {
             mdto = new Member();
             mdto.setId(kakaoProfile.getId());
+            mdto.setPass("KAKAO");
             mdto.setSnsid(kakaoProfile.getId());
             mdto.setName(ac.getProfile().getNickname());
             mdto.setProfileImg(pf.getProfile_image_url());
@@ -225,7 +226,7 @@ public class MemberController {
             for(MemberRole mr : mrList){
                 mrsList.add(mr.getRoleName());
             }
-            MemberDto mdto = new MemberDto(member, mrsList);
+            MemberDto mdto = new MemberDto(loginUser, mrsList);
             String accessToken = JWTUtil.generateToken(mdto.getClaims(), 1);
             String refreshToken = JWTUtil.generateToken(mdto.getClaims(), 60*24);
 
