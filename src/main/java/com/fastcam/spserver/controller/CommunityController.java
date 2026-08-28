@@ -4,6 +4,7 @@ import com.fastcam.spserver.entity.*;
 import com.fastcam.spserver.service.CommunityService;
 import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,22 +47,40 @@ public class CommunityController {
     @Autowired
     ServletContext sc;
 
+    @Value("${file.upload.path}")
+    private String uploadPath;
+
     @PostMapping("/fileupload")
-    public HashMap<String, Object> fileupload(@RequestParam("image") MultipartFile file) {
+    public HashMap<String, Object> fileupload(@RequestParam("image") MultipartFile file){
         HashMap<String, Object> map = new HashMap<String, Object>();
-        String path = sc.getRealPath("/image/community");
+
+        String path = uploadPath + "/community";
+
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
+
         String filename = file.getOriginalFilename();
         String f1 = filename.substring(0, filename.lastIndexOf("."));
         String f2 = filename.substring(filename.lastIndexOf("."));
-        String uploadPath = path + "/" + f1 + dt + f2;
+
+        String newFilename = f1 + dt + f2;
+        String filePath = path + "/" + newFilename;
+
         try {
-            file.transferTo(new File(uploadPath));
-            map.put("filename", f1 + dt + f2);
+            File dir = new File(path);
+
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            file.transferTo(new File(filePath));
+
+            map.put("filename", newFilename);
+
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
+
         return map;
     }
 
