@@ -10,6 +10,7 @@ import com.fastcam.spserver.entity.FoodLog;
 import com.fastcam.spserver.entity.Nutrition;
 import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.http.client.ReactorClientHttpRequestFactory;
@@ -47,7 +48,8 @@ public class AIService {
     @Autowired
     MemberRepository mr;
 
-    public AIService() {
+    public AIService( @Value("${fastapi.base-url}") String fastApiBaseUrl) {
+
 
         HttpClient httpClient = HttpClient.create()
                 .responseTimeout(Duration.ofMinutes(5));
@@ -56,11 +58,11 @@ public class AIService {
                 new ReactorClientHttpRequestFactory(httpClient);
 
         this.webClient = WebClient.builder()
-                .baseUrl("http://localhost:8000")
+                .baseUrl(fastApiBaseUrl)
                 .build();
 
         this.restClient = RestClient.builder()
-                .baseUrl("http://localhost:8000")
+                .baseUrl(fastApiBaseUrl)
                 .requestFactory(factory)
                 .build();
     }
