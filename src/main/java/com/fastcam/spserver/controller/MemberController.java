@@ -391,28 +391,28 @@ public class MemberController {
         return result;
     }
 
-    @PostMapping("/confirmNumber")
-    public HashMap<String, Object> confirmNumber(@RequestParam("userNumber") String userNumber, @RequestParam("phone") String phone){
+    @PostMapping("/confirmSMSCode")
+    public HashMap<String, Object> confirmSMSCode(@RequestParam("userNumber") String userNumber, @RequestParam("phone") String phone){
         HashMap<String, Object> result = new HashMap<>();
-        result.put("msg",ss.confirmNumber(userNumber, phone));
+        result.put("msg",ss.confirmSMSCode(userNumber, phone));
         return result;
     }
 
     @Autowired
     EmailService es;
 
-    @PostMapping("/sendMail")
-    public HashMap<String, Object> sendMail(@RequestParam("email") String email){
+    @PostMapping("/sendEmail")
+    public HashMap<String, Object> sendEmail(@RequestParam("email") String email){
         HashMap<String, Object> result = new HashMap<>();
         es.sendEmail(email);
         result.put("msg","ok");
         return result;
     }
 
-    @PostMapping("/confirmCode")
-    public HashMap<String, Object> confirmCode(@RequestParam("userNumber") String userNumber, @RequestParam("email") String email){
+    @PostMapping("/confirmEmailCode")
+    public HashMap<String, Object> confirmEmailCode(@RequestParam("userNumber") String userNumber, @RequestParam("email") String email){
         HashMap<String, Object> result = new HashMap<>();
-        result.put("msg",es.confirmCode(userNumber, email));
+        result.put("msg",es.confirmEmailCode(userNumber, email));
         return result;
     }
 }
