@@ -17,6 +17,7 @@ public class MemberDto extends User {
     private String pass;
     private String name;
     private String phone;
+    private String email;
     private String profileImg;
     private String provider;
     private List<String> role_names = new ArrayList<>();
@@ -32,6 +33,7 @@ public class MemberDto extends User {
         this.pass = member.getPass();
         this.name = member.getName();
         this.phone = member.getPhone();
+        this.email = member.getEmail();
         this.profileImg = member.getProfileImg();
         this.provider = member.getProvider();
         this.role_names = roleNames;
@@ -45,6 +47,7 @@ public class MemberDto extends User {
         dataMap.put("pass",pass);
         dataMap.put("name", name);
         dataMap.put("phone", phone);
+        dataMap.put("email", email);
         dataMap.put("profileImg", profileImg);
         dataMap.put("provider", provider);
         dataMap.put("role_names", role_names);
