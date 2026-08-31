@@ -24,6 +24,8 @@ public class SMSService {
 
 
     public void sendSMS(String toPhone) {
+        toPhone = toPhone.replace("-", "");
+
         int number = (int)(Math.random() * (900000)) + 100000;
 
         Message message = new Message();
@@ -37,6 +39,7 @@ public class SMSService {
     }
 
     public String confirmSMSCode(String userNumber, String phone) {
+        phone = phone.replace("-", "");
         String msg = "";
         if(!codeList.containsKey(phone))
             msg = "먼저 인증번호를 발급받으세요.";
