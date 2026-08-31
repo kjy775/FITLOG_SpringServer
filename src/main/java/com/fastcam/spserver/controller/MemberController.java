@@ -8,7 +8,9 @@ import com.fastcam.spserver.entity.Member;
 import com.fastcam.spserver.entity.MemberRole;
 import com.fastcam.spserver.security.util.CustomJWTException;
 import com.fastcam.spserver.security.util.JWTUtil;
+import com.fastcam.spserver.service.EmailService;
 import com.fastcam.spserver.service.MemberService;
+import com.fastcam.spserver.service.SMSService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -378,4 +380,39 @@ public class MemberController {
         return result;
     }
 
+    @Autowired
+    SMSService ss;
+
+    @PostMapping("/sendSMS")
+    public HashMap<String, Object> sendSMS(@RequestParam("phone") String phone){
+        HashMap<String, Object> result = new HashMap<>();
+        ss.sendSMS(phone);
+        result.put("msg","ok");
+        return result;
+    }
+
+    @PostMapping("/confirmNumber")
+    public HashMap<String, Object> confirmNumber(@RequestParam("userNumber") String userNumber, @RequestParam("phone") String phone){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("msg",ss.confirmNumber(userNumber, phone));
+        return result;
+    }
+
+    @Autowired
+    EmailService es;
+
+    @PostMapping("/sendMail")
+    public HashMap<String, Object> sendMail(@RequestParam("email") String email){
+        HashMap<String, Object> result = new HashMap<>();
+        es.sendEmail(email);
+        result.put("msg","ok");
+        return result;
+    }
+
+    @PostMapping("/confirmCode")
+    public HashMap<String, Object> confirmCode(@RequestParam("userNumber") String userNumber, @RequestParam("email") String email){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("msg",es.confirmCode(userNumber, email));
+        return result;
+    }
 }

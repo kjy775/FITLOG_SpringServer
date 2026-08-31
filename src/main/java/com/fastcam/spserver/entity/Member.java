@@ -23,6 +23,8 @@ public class Member {
     @Column(nullable = false)
     private String name;
     private String phone;
+    @Column(length = 100)
+    private String email;
     @Column(length = 500)
     private String profileImg;
     @Column(columnDefinition = "varchar(20) default 'LOCAL'")
