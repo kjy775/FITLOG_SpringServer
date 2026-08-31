@@ -1,9 +1,11 @@
 package com.fastcam.spserver.service;
 
+import com.fastcam.spserver.repository.MemberRepository;
 import com.fastcam.spserver.verification.VerificationCode;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,8 @@ public class EmailService {
 
     private final HashMap<String, VerificationCode> codeList = new HashMap<>();
 
-    public void sendEmail(String email) {
+    public String sendEmail(String email) {
+        String msg = "";
         int number = (int)(Math.random() * (900000)) + 100000;
         MimeMessage message = JMSender.createMimeMessage();
         try {
@@ -37,6 +40,8 @@ public class EmailService {
         }
         JMSender.send(message);
         codeList.put(email, new VerificationCode(number));
+        msg = "ok";
+        return msg;
     }
 
 
