@@ -402,10 +402,13 @@ public class MemberController {
     EmailService es;
 
     @PostMapping("/sendEmail")
-    public HashMap<String, Object> sendEmail(@RequestParam("email") String email){
+    public HashMap<String, Object> sendEmail(@RequestParam("email") String email, @RequestParam("id") String id){
         HashMap<String, Object> result = new HashMap<>();
-        es.sendEmail(email);
-        result.put("msg","ok");
+        if(ms.getMemberByIdAndEmail(id, email) == null) {
+            result.put("msg", "아이디나 이메일을 확인하세요.");
+        } else{
+            result.put("msg",es.sendEmail(email));
+        }
         return result;
     }
 
