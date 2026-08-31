@@ -32,6 +32,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String pass = (String) claims.get("pass");
             String name = (String) claims.get("name");
             String phone = (String) claims.get("phone");
+            String email = (String) claims.get("email");
             String profileImg = (String) claims.get("profileImg");
             String provider = (String) claims.get("provider");
             List<String> role_names  = (List<String>) claims.get("role_names");
@@ -42,6 +43,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             m.setPass(pass);
             m.setName(name);
             m.setPhone(phone);
+            m.setEmail(email);
             m.setProfileImg(profileImg);
             m.setProvider(provider);
 
