@@ -40,7 +40,7 @@ public class EmailService {
     }
 
 
-    public String confirmCode(String userNumber, String email) {
+    public String confirmEmailCode(String userNumber, String email) {
         String msg = "";
         if(!codeList.containsKey(email))
             msg = "먼저 인증번호를 발급받으세요.";

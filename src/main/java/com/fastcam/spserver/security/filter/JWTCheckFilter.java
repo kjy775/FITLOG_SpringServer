@@ -108,7 +108,14 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         if(path.startsWith("/chat"))
             return true;
-
+        if(path.startsWith("/member/sendSMS"))
+            return true;
+        if(path.startsWith("/member/confirmSMSCode"))
+            return true;
+        if(path.startsWith("/member/sendEmail"))
+            return true;
+        if(path.startsWith("/member/confirmEmailCode"))
+            return true;
         return false;
     }
 }

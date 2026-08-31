@@ -36,7 +36,7 @@ public class SMSService {
         codeList.put(toPhone,new VerificationCode(number));
     }
 
-    public String confirmNumber(String userNumber, String phone) {
+    public String confirmSMSCode(String userNumber, String phone) {
         String msg = "";
         if(!codeList.containsKey(phone))
             msg = "먼저 인증번호를 발급받으세요.";
