@@ -1,9 +1,6 @@
 package com.fastcam.spserver.service;
 
-import com.fastcam.spserver.entity.Community;
-import com.fastcam.spserver.entity.Follow;
-import com.fastcam.spserver.entity.Member;
-import com.fastcam.spserver.entity.MemberRole;
+import com.fastcam.spserver.entity.*;
 import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +25,9 @@ public class MemberService {
     @Autowired
     ReportRepository repr;
 
+    @Autowired
+    SubscriptionRepository sr;
+
     public Member getMemberById(String id) {
         Member member = mr.findById(id);
         return member;
@@ -40,6 +41,12 @@ public class MemberService {
         BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
         member.setPass( pe.encode( member.getPass()));
         mr.save(member);
+        Member saved = mr.findById(member.getId());
+        Subscription s = new Subscription();
+        s.setMember(saved);
+        s.setSubStart(LocalDate.now());
+        s.setSubEnd(LocalDate.now().plusDays(15));
+        sr.save(s);
     }
 
 
