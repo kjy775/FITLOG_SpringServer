@@ -17,6 +17,10 @@ public class Report {
     private String memo;
 
     @ManyToOne
+    @JoinColumn(name = "mnum")
+    private Member member;
+
+    @ManyToOne
     @JoinColumn(name = "cnum")
     private Community community;
 }
