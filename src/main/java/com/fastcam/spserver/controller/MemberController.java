@@ -394,7 +394,7 @@ public class MemberController {
     @PostMapping("/confirmSMSCode")
     public HashMap<String, Object> confirmSMSCode(@RequestParam("userNumber") String userNumber, @RequestParam("phone") String phone){
         HashMap<String, Object> result = new HashMap<>();
-        result.put("msg",ss.confirmSMSCode(userNumber, phone));
+        result.put("msg", ss.confirmSMSCode(userNumber, phone));
         return result;
     }
 
