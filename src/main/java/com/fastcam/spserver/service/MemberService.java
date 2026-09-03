@@ -194,6 +194,6 @@ public class MemberService {
         return mr.findBySnsid(id);
     }
 
-    public Member getMemberByIdAndEmail(String id, String email) { return mr.findByIdAndEmail(email);
+    public Member getMemberByIdAndEmail(String id, String email) { return mr.findByIdAndEmail(id, email);
     }
 }
