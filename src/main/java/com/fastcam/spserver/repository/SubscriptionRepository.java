@@ -10,4 +10,6 @@ public interface SubscriptionRepository
         extends JpaRepository<Subscription, Integer> {
 
     Optional<Subscription> findByMember(Member member);
+
+    Subscription findTopByMemberOrderByNumDesc(Member byNum);
 }

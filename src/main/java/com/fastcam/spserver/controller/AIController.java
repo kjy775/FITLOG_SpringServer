@@ -26,8 +26,8 @@ public class AIController {
     }
 
     @PostMapping("/findFood")
-    public Map<String, Object> findFood(@RequestParam("image") MultipartFile file) {
-        return as.findFood(file);
+    public Map<String, Object> findFood(@RequestParam("image") MultipartFile file, @RequestParam("mnum") int mnum) {
+        return as.findFood(file, mnum);
     }
 
 }
