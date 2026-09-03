@@ -11,4 +11,5 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     List<Report> findByMemoIsNotNull();
 
     List<Report> findByMemoIsNull();
+
 }
