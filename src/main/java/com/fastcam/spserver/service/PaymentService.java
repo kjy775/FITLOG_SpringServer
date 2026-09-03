@@ -5,6 +5,7 @@ import com.fastcam.spserver.dto.PaymentConfirmResponse;
 import com.fastcam.spserver.entity.Member;
 import com.fastcam.spserver.entity.Payment;
 import com.fastcam.spserver.entity.Subscription;
+import com.fastcam.spserver.repository.MemberRepository;
 import com.fastcam.spserver.repository.PaymentRepository;
 import com.fastcam.spserver.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
 
@@ -32,7 +34,11 @@ public class PaymentService {
     @Autowired
     SubscriptionRepository sr;
 
-    public PaymentConfirmResponse confirmPayment(PaymentConfirmRequest request, Member member) {
+    @Autowired
+    MemberRepository mr;
+
+    public PaymentConfirmResponse confirmPayment(PaymentConfirmRequest request, int mnum) {
+        Member member = mr.findByNum(mnum);
         String authorization = "Basic " + Base64.getEncoder()
                 .encodeToString((secretKey + ":").getBytes(StandardCharsets.UTF_8));
 
@@ -59,14 +65,43 @@ public class PaymentService {
 
                 pr.save(payment);
 
-                int days = getSubscriptionDays(result.productName());
+                int days = getSubscriptionDays(request.productName());
 
+                Subscription sub = sr.findByMember(member).orElse(null);
+                LocalDate today = LocalDate.now();
 
+                //구독 정보 처리
+                if(sub == null) {
+                    //결제 처음하는 경우
+                    sub = new Subscription();
+                    sub.setMember(member);
+                    sub.setSubStart(today);
+                    sub.setSubEnd(today.plusDays(days));
+                } else if (sub.getSubEnd().isAfter(today)) {
+                    //기존 구독이 남아있는 경우
+                    sub.setSubEnd(sub.getSubEnd().plusDays(days));
+                } else {
+                    //기존 구독이 만료된 경우
+                    sub.setSubStart(today);
+                    sub.setSubEnd(today.plusDays(days));
+                }
+
+                sr.save(sub);
             }
+            return result;
 
         } catch (HttpClientErrorException e) {
             // 토스페이먼츠가 4xx로 내려주는 에러 바디(코드/메시지)를 그대로 전달
             throw new RuntimeException("결제 승인 실패: " + e.getResponseBodyAsString(), e);
         }
+    }
+
+    private int getSubscriptionDays(String productName) {
+        return switch (productName) {
+            case "30일" -> 30;
+            case "180일" -> 180;
+            case "1년" -> 365;
+            default -> throw new IllegalArgumentException("잘못된 구독 상품입니다.");
+        };
     }
 }
