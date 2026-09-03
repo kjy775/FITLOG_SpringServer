@@ -57,15 +57,23 @@ public class PaymentService {
 
             //결제 승인 성공
             if (result.isDone()) {
+
+                System.out.println("========== 결제 확인 ==========");
+                System.out.println("paymentKey : " + request.paymentKey());
+                System.out.println("orderId    : " + request.orderId());
+                System.out.println("amount     : " + request.amount());
+                System.out.println("orderName  : " + request.orderName());
+                System.out.println("==============================");
+
                 Payment payment = new Payment();
                 payment.setMember(member);
                 payment.setPaymentKey(result.paymentKey());
                 payment.setPrice(result.totalAmount());
-                payment.setProductName(request.productName());
+                payment.setProductName(request.orderName());
 
                 pr.save(payment);
 
-                int days = getSubscriptionDays(request.productName());
+                int days = getSubscriptionDays(request.orderName());
 
                 Subscription sub = sr.findByMember(member).orElse(null);
                 LocalDate today = LocalDate.now();
@@ -96,11 +104,11 @@ public class PaymentService {
         }
     }
 
-    private int getSubscriptionDays(String productName) {
-        return switch (productName) {
-            case "30일" -> 30;
-            case "180일" -> 180;
-            case "1년" -> 365;
+    private int getSubscriptionDays(String orderName) {
+        return switch (orderName) {
+            case "월 정기구독" -> 30;
+            case "6개월 구독" -> 180;
+            case "년 정기구독" -> 365;
             default -> throw new IllegalArgumentException("잘못된 구독 상품입니다.");
         };
     }

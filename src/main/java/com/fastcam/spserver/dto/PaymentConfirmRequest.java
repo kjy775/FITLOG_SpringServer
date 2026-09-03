@@ -4,7 +4,7 @@ public record PaymentConfirmRequest(
         String paymentKey,
         String orderId,
         Long amount,
-        String productName
+        String orderName
 ) {
 
 }
