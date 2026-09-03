@@ -83,7 +83,7 @@ public class AIService {
         // 구독 확인
         Subscription s = sr.findTopByMemberOrderByNumDesc(member);
 
-        if (s.getSubEnd().isBefore(LocalDate.now())) {
+        if (s == null || s.getSubEnd().isBefore(LocalDate.now())) {
 
             ResponseDto res = new ResponseDto();
             res.setAnswer("구독이 만료되었습니다. 구독 후 서비스를 이용해주세요.");
@@ -126,7 +126,7 @@ public class AIService {
         Subscription s = sr.findTopByMemberOrderByNumDesc(member);
 
         // 구독 만료 확인
-        if (s.getSubEnd().isBefore(LocalDate.now())) {
+        if (s == null || s.getSubEnd().isBefore(LocalDate.now())) {
             Map<String, Object> res = new HashMap<>();
             res.put("answer", "구독이 만료되었습니다. 구독 후 서비스를 이용해주세요.");
             return res;
