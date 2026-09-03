@@ -31,13 +31,8 @@ public class SMSService {
         Message message = new Message();
         message.setFrom(senderPhone);
         message.setTo(toPhone);
-        message.setText("[FITLOG] 본인확인 인증번호 안내\n\n"
-                + "안녕하세요, FITLOG입니다.\n\n"
-                + "요청하신 인증번호는 아래와 같습니다.\n\n"
-                + "[ " + number + " ]\n\n"
-                + "본 인증번호는 5분간 유효합니다.\n"
-                + "타인에게 절대 공유하지 마세요.\n\n"
-                + "본인이 요청하지 않은 경우 이 메시지를 무시하세요.");
+        message.setText("[FITLOG] 인증번호는 [ " + number + " ] 입니다.\n"
+                + "5분간 유효하며, 타인에게 공유하지 마세요.");
         SingleMessageSentResponse response =
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
 
