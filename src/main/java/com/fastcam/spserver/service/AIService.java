@@ -4,10 +4,7 @@ import com.fastcam.spserver.dto.ExerciseDto;
 import com.fastcam.spserver.dto.NutritionDto;
 import com.fastcam.spserver.dto.RequestDto;
 import com.fastcam.spserver.dto.ResponseDto;
-import com.fastcam.spserver.entity.Chat;
-import com.fastcam.spserver.entity.FoodGoal;
-import com.fastcam.spserver.entity.FoodLog;
-import com.fastcam.spserver.entity.Nutrition;
+import com.fastcam.spserver.entity.*;
 import com.fastcam.spserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +45,9 @@ public class AIService {
     @Autowired
     MemberRepository mr;
 
+    @Autowired
+    SubscriptionRepository sr;
+
     public AIService( @Value("${fastapi.base-url}") String fastApiBaseUrl) {
 
 
@@ -71,12 +71,34 @@ public class AIService {
     // 일반 AI 질문
     public ResponseDto query(RequestDto req) {
 
+        Member member = mr.findByNum(req.getUserId());
+
+        // 사용자 질문 저장
         Chat userChat = new Chat();
-        userChat.setMember(mr.findByNum(req.getUserId()));
+        userChat.setMember(member);
         userChat.setContent(req.getUserChat());
         userChat.setSender("user");
         cr.save(userChat);
 
+        // 구독 확인
+        Subscription s = sr.findTopByMemberOrderByNumDesc(member);
+
+        if (s.getSubEnd().isBefore(LocalDate.now())) {
+
+            ResponseDto res = new ResponseDto();
+            res.setAnswer("구독이 만료되었습니다. 구독 후 서비스를 이용해주세요.");
+
+            // 만료 안내도 채팅 기록에 저장
+            Chat aiChat = new Chat();
+            aiChat.setMember(member);
+            aiChat.setContent(res.getAnswer());
+            aiChat.setSender("ai");
+            cr.save(aiChat);
+
+            return res;
+        }
+
+        // 구독이 유효한 경우에만 FastAPI 호출
         ResponseDto res = webClient.post()
                 .uri("/query")
                 .bodyValue(req)
@@ -84,19 +106,31 @@ public class AIService {
                 .bodyToMono(ResponseDto.class)
                 .block();
 
-        Chat aiChat = new Chat();
         if (res != null) {
-            aiChat.setMember(mr.findByNum(req.getUserId()));
+            Chat aiChat = new Chat();
+            aiChat.setMember(member);
             aiChat.setContent(res.getAnswer());
             aiChat.setSender("ai");
+            cr.save(aiChat);
         }
-        cr.save(aiChat);
+
         return res;
     }
 
 
     // 음식 사진 분석
-    public Map<String, Object> findFood(MultipartFile file) {
+    public Map<String, Object> findFood(MultipartFile file, int mnum) {
+
+        Member member = mr.findByNum(mnum);
+
+        Subscription s = sr.findTopByMemberOrderByNumDesc(member);
+
+        // 구독 만료 확인
+        if (s.getSubEnd().isBefore(LocalDate.now())) {
+            Map<String, Object> res = new HashMap<>();
+            res.put("answer", "구독이 만료되었습니다. 구독 후 서비스를 이용해주세요.");
+            return res;
+        }
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
