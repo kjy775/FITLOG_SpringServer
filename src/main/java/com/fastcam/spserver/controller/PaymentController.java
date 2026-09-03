@@ -3,11 +3,13 @@ package com.fastcam.spserver.controller;
 import com.fastcam.spserver.dto.PaymentConfirmRequest;
 import com.fastcam.spserver.dto.PaymentConfirmResponse;
 import com.fastcam.spserver.entity.Member;
+import com.fastcam.spserver.entity.Payment;
 import com.fastcam.spserver.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/charge")
@@ -25,6 +27,14 @@ public class PaymentController {
         } else {
             map.put("msg", result.status());
         }
+        return map;
+    }
+
+    @GetMapping("/getPayment")
+    public HashMap<String, Object> getPayment(@RequestParam("mnum") int mnum) {
+        HashMap<String, Object> map = new HashMap<>();
+        List<Payment> paymentList = ps.getPayment(mnum);
+        map.put("paymentList", paymentList);
         return map;
     }
 

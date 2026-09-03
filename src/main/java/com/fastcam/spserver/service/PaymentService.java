@@ -19,6 +19,7 @@ import org.springframework.web.client.RestClient;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -111,5 +112,10 @@ public class PaymentService {
             case "년 정기구독" -> 365;
             default -> throw new IllegalArgumentException("잘못된 구독 상품입니다.");
         };
+    }
+
+    public List<Payment> getPayment(int mnum) {
+        Member member = mr.findByNum(mnum);
+        return pr.findByMemberOrderByIndateDesc(member);
     }
 }
