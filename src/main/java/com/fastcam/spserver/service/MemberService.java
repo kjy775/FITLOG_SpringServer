@@ -56,6 +56,7 @@ public class MemberService {
         oldMember.setName(member.getName());
         oldMember.setPhone(member.getPhone());
         oldMember.setProfileImg(member.getProfileImg());
+        oldMember.setEmail(member.getEmail());
     }
 
     public Member updateKakaoInfo(Member member) {
