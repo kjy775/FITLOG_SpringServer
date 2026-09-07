@@ -4,6 +4,7 @@ import com.fastcam.spserver.dto.PaymentConfirmRequest;
 import com.fastcam.spserver.dto.PaymentConfirmResponse;
 import com.fastcam.spserver.entity.Member;
 import com.fastcam.spserver.entity.Payment;
+import com.fastcam.spserver.entity.Subscription;
 import com.fastcam.spserver.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,20 +43,27 @@ public class PaymentController {
     public HashMap<String, Object> getSubscription(@RequestParam("mnum") int mnum) {
         HashMap<String, Object> map = new HashMap<>();
 
-        Payment payment = ps.getLatestPayment(mnum);
+//        Payment payment = ps.getLatestPayment(mnum);
+//
+//        if(payment == null) {
+//            map.put("subEnd", null);
+//            return map;
+//        }
+//
+//        java.time.LocalDate subEnd = payment.getIndate()
+//                .toInstant()
+//                .atZone(java.time.ZoneId.systemDefault())
+//                .toLocalDate()
+//                .plusDays(30);
+//
+//        map.put("subEnd", subEnd.toString());
 
-        if(payment == null) {
+        Subscription s = ps.getSubEnd(mnum);
+        if(s == null) {
             map.put("subEnd", null);
-            return map;
+        } else {
+            map.put("subEnd",s.getSubEnd());
         }
-
-        java.time.LocalDate subEnd = payment.getIndate()
-                .toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
-                .toLocalDate()
-                .plusDays(30);
-
-        map.put("subEnd", subEnd.toString());
 
         return map;
     }
