@@ -118,4 +118,14 @@ public class PaymentService {
         Member member = mr.findByNum(mnum);
         return pr.findByMemberOrderByIndateDesc(member);
     }
+
+    public Payment getLatestPayment(int mnum) {
+        List<Payment> list = pr.findByMemberNumOrderByIndateDesc(mnum);
+
+        if(list.isEmpty()) return null;
+
+        return list.get(0);
+    }
+
+
 }

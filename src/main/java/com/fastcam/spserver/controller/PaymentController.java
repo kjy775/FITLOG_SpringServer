@@ -38,4 +38,27 @@ public class PaymentController {
         return map;
     }
 
+    @GetMapping("/getSubscription")
+    public HashMap<String, Object> getSubscription(@RequestParam("mnum") int mnum) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        Payment payment = ps.getLatestPayment(mnum);
+
+        if(payment == null) {
+            map.put("subEnd", null);
+            return map;
+        }
+
+        java.time.LocalDate subEnd = payment.getIndate()
+                .toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate()
+                .plusDays(30);
+
+        map.put("subEnd", subEnd.toString());
+
+        return map;
+    }
+
+
 }
