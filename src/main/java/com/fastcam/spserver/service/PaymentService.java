@@ -86,16 +86,23 @@ public class PaymentService {
                     sub.setMember(member);
                     sub.setSubStart(today);
                     sub.setSubEnd(today.plusDays(days));
+                    sr.save(sub);
                 } else if (sub.getSubEnd().isAfter(today)) {
                     //기존 구독이 남아있는 경우
                     sub.setSubEnd(sub.getSubEnd().plusDays(days));
+                    sr.save(sub);
                 } else {
                     //기존 구독이 만료된 경우
-                    sub.setSubStart(today);
-                    sub.setSubEnd(today.plusDays(days));
+//                    sub.setSubStart(today);
+//                    sub.setSubEnd(today.plusDays(days));
+                    Subscription newSub = new Subscription();
+                    newSub.setMember(member);
+                    newSub.setSubStart(today);
+                    newSub.setSubEnd(today.plusDays(days));
+                    sr.save(newSub);
                 }
 
-                sr.save(sub);
+//                sr.save(sub);
             }
             return result;
 
@@ -128,4 +135,9 @@ public class PaymentService {
     }
 
 
+    public Subscription getSubEnd(int mnum) {
+        List<Subscription> list = sr.findByMemberNumOrderBySubEndDesc(mnum);
+        if(list.isEmpty()) return null;
+        return list.get(0);
+    }
 }
